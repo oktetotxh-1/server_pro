@@ -1,5 +1,19 @@
 services:
-  gaotie:
-    build: .
+  test:
+    tty: true
+    build: ./build/hisrute
+    restart: on-failure
+    network_mode: bridge
+    mem_limit: 256G
+    security_opt:
+      - seccomp=unconfined
+    cap_add:
+      - SYS_ADMIN
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    tmpfs:
+      - /tmp
+      - /run
+      - /run/lock
     ports:
       - 80:80
