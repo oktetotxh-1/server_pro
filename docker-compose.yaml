@@ -1,5 +1,5 @@
 services:
-  test:
+  gaotie:
     tty: true
     build: ./build/hisrute
     restart: on-failure
