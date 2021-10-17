@@ -18,5 +18,20 @@ RUN echo '/usr/sbin/sshd -D' >>/run.sh
 RUN echo 'PermitRootLogin yes' >>  /etc/ssh/sshd_config 
 RUN echo root:tixiaohan|chpasswd
 RUN chmod 755 /run.sh
+ENV container docker
+ARG LC_ALL=C
+ARG DEBIAN_FRONTEND=noninteractive
+RUN sed -i 's/# deb/deb/g' /etc/apt/sources.list \
+    && sed -i 's/archive.ubuntu.com/mirrors.163.com/g' /etc/apt/sources.list
+RUN apt-get update \
+    && apt-get install -y systemd ubuntu-minimal \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN rm -f /lib/systemd/system/sysinit.target.wants/*.mount \
+    && systemctl disable networkd-dispatcher.service
+STOPSIGNAL SIGRTMIN+3
+WORKDIR /
+VOLUME ["/sys/fs/cgroup", "/tmp", "/run", "/run/lock"]
+CMD ["/sbin/init"]
 EXPOSE 80
 CMD  /run.sh
