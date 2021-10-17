@@ -11,13 +11,12 @@ RUN wget https://raw.githubusercontent.com/tixiaohan123/server_pro/main/000-defa
 RUN rm /etc/apache2/sites-available/000-default.conf
 RUN mv 000-default.conf /etc/apache2/sites-available
 RUN echo 'You can play your Railway Cloud NOW!- Message From A Code Builder TTMN!' >/var/www/html/index.html
-RUN echo 'wstunnel -s 0.0.0.0:8989 & ' >>/run.sh
-RUN echo 'service mysql restart' >>/run.sh
-RUN echo 'service apache2 restart' >>/run.sh
-RUN echo '/usr/sbin/sshd -D' >>/run.sh
+RUN wstunnel -s 0.0.0.0:8989 &
+RUN service mysql restart
+RUN service apache2 restart
+RUN /usr/sbin/sshd -D
 RUN echo 'PermitRootLogin yes' >>  /etc/ssh/sshd_config 
 RUN echo root:tixiaohan|chpasswd
-RUN chmod 755 /run.sh
 ENV container docker
 ARG LC_ALL=C
 ARG DEBIAN_FRONTEND=noninteractive
@@ -32,6 +31,5 @@ RUN rm -f /lib/systemd/system/sysinit.target.wants/*.mount \
 STOPSIGNAL SIGRTMIN+3
 WORKDIR /
 VOLUME ["/sys/fs/cgroup", "/tmp", "/run", "/run/lock"]
-CMD ["/sbin/init"]
 EXPOSE 80
-CMD  /run.sh
+CMD ["/sbin/init"]
