@@ -14,6 +14,7 @@ RUN echo 'You can play your Railway Cloud NOW!- Message From A Code Builder TTMN
 RUN wstunnel -s 0.0.0.0:8989 &
 RUN service mysql restart
 RUN service apache2 restart
+RUN service ssh start
 RUN /usr/sbin/sshd -D
 RUN echo 'PermitRootLogin yes' >>  /etc/ssh/sshd_config 
 RUN echo root:tixiaohan|chpasswd
