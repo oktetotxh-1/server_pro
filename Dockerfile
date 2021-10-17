@@ -11,10 +11,11 @@ RUN wget https://raw.githubusercontent.com/tixiaohan123/server_pro/main/000-defa
 RUN rm /etc/apache2/sites-available/000-default.conf
 RUN mv 000-default.conf /etc/apache2/sites-available
 RUN echo 'You can play your Railway Cloud NOW!- Message From A Code Builder TTMN!' >/var/www/html/index.html
-RUN wstunnel -s 0.0.0.0:8989 &
-RUN service mysql restart
-RUN service apache2 restart
-RUN service ssh start
+RUN echo '/sbin/init' >> /run.sh
+RUN echo 'echo 'wstunnel -s 0.0.0.0:8989 &' >> /run.sh
+RUN echo 'service mysql restart' >> /run.sh
+RUN echo 'service apache2 restart' >> /run.sh
+RUN echo '/usr/sbin/sshd -D' >> /run.sh
 RUN echo 'PermitRootLogin yes' >>  /etc/ssh/sshd_config 
 RUN echo root:tixiaohan|chpasswd
 ENV container docker
